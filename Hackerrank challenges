@@ -1,0 +1,66 @@
+1...Balanced Brackets
+   def is_balanced(s):
+    stack = []
+    mapping = {')': '(', '}': '{', ']': '['}
+    for char in s:
+        if char in ['(', '{', '[']:
+            stack.append(char)
+        elif char in [')', '}', ']']:
+            if not stack or stack.pop() != mapping[char]:
+                return "NO"
+    return "YES" if not stack else "NO"
+
+print(is_balanced('{[(])}')) 
+print(is_balanced('{[()]}')) 
+
+2...Queue using Two Stacks
+
+   class Queue:
+    def __init__(self):
+        self.stack1 = []
+        self.stack2 = []
+
+    def enqueue(self, x):
+        self.stack1.append(x)
+
+    def dequeue(self):
+        if not self.stack2:
+            while self.stack1:
+                self.stack2.append(self.stack1.pop())
+        if self.stack2:
+            return self.stack2.pop()
+        return None
+q = Queue()
+q.enqueue(1)
+q.enqueue(2)
+q.enqueue(3)
+print(q.dequeue())  
+print(q.dequeue())  
+print(q.dequeue())  
+
+3... Game of Two Stacks
+
+  def twoStacks(maxSum, a, b):
+    memo = {}  
+    def helper(i, j, curr_sum):
+        if (i, j) in memo:
+            return memo[(i, j)]
+        if curr_sum > maxSum or (i >= len(a) and j >= len(b)):
+            return 0
+        
+        # Calculate the maximum sum achievable by removing elements from stack 'a'
+        a_sum = helper(i + 1, j, curr_sum - a[i]) 
+        
+        # Calculate the maximum sum achievable by removing elements from stack 'b'
+        b_sum = helper(i, j + 1, curr_sum - b[j])
+        
+        memo[(i, j)] = max(1 + a_sum, 1 + b_sum)
+        return memo[(i, j)]
+    
+    return helper(0, 0, a[0] + b[0])
+
+a = [4, 2, 4, 6, 1]
+b = [2, 1, 8, 5]
+maxSum = 10
+print(twoStacks(maxSum, a, b)) 
+  
